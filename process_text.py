@@ -13,7 +13,7 @@ def process_text(input_text):
             stack.pop()
             current_indent -= 4
 
-        # If the line ends with a colon, create a new sublist
+        # If is more indented than previously, create a new sublist
         if indent > current_indent:
             new_sublist = []
             current_list.append(new_sublist)
@@ -26,12 +26,69 @@ def process_text(input_text):
     return result
 
 # Example usage:
-input_text = """Fruit
-    Apple
-    Orange
-Vegetable
-    Carrot
-    Broccoli
-    Leafy Greens
-        Spinach
-        Kale"""
+input_text = """
+Constitutional
+    General
+    Vitals
+HEENT
+    Head
+    Eyes
+    Ears
+    Nose
+    Throat
+Pulmonary
+Cardiovascular
+Gastrointestinal
+    Inspection
+    Auscultation
+    Palpation
+Genitourinary
+Dermatologic
+Musculoskeletal
+Neurological
+    Cranial Nerves
+    Mental Status (Neuro)
+    Sensory
+    Motor
+    Reflexes
+        Upper Extremity Reflexes
+            Biceps
+            Brachioradialis
+            Triceps
+        Lower Extremity Reflexes
+            Knee Jerks
+            Ankle Jerk Reflexes
+        Special Refles
+    Cerebellar
+Psychiatric"""
+        
+print(process_text(input_text))
+
+
+['', 
+'Constitutional', 
+[   'General', 
+    'Vitals'], 
+'HEENT', 
+[   'Head', 
+    'Eyes', 
+    'Ears', 
+    'Nose', 
+    'Throat'], 
+'Pulmonary', 
+'Cardiovascular', 
+'Gastrointestinal', 
+[   'Inspection', 
+    'Auscultation',     
+    'Palpation'], 
+'Genitourinary', '  
+'Dermatologic', 
+'Musculoskeletal', 
+'Neurological', 
+[   'Cranial Nerves', 
+    'Mental Status (Neuro)', 
+    'Sensory', 
+    'Motor', 
+    'Reflexes', 
+    'Cerebellar'], 
+    'Psychiatric']
