@@ -1,4 +1,12 @@
-def process_text(input_text):
+def process_indented_text(input_text, indent_spaces):
+    """
+        input_text = the indented text to be parsed 
+            - the first line must not be indented
+            - indentations should be spaces and not tabs
+        indent_spaces = the number of spaces that equals one indentation level 
+            - so if 4 spaces each, then 8 spaces would be two indentations
+            - indentations must be a multiple of this number to parse correctly
+    """
     lines = input_text.split('\n')
     result = []
     stack = [result]  # Stack to keep track of current list or sublist
@@ -11,18 +19,56 @@ def process_text(input_text):
         # Move to a new sublist
         while indent < current_indent:
             stack.pop()
-            current_indent -= 4
+            current_indent -= indent_spaces
 
         # If is more indented than previously, create a new sublist
         if indent > current_indent:
             the_sublist = current_list[-1]['children']
             stack.append(the_sublist)
-            current_indent += 4
+            current_indent += indent_spaces
 
         current_list = stack[-1]
         current_list.append({'section':line_content, 'children':[]})
 
     return result
+
+
+def print_list_of_dictionaries(list_of_dictionaries):
+
+    def helper(list_of_dictionaries, number_of_spaces):
+        for dictionary in list_of_dictionaries:
+            section = dictionary['section']
+            children = dictionary['children']
+            leading_spaces = " "*number_of_spaces
+            output_line = leading_spaces + section
+            print(output_line)
+            if not children==[]:
+                helper(children, number_of_spaces+4)
+
+    helper(list_of_dictionaries, 0)
+
+# textografo input
+"""
+    textografo input needs to be massaged; branches of decisions are not indented
+"""
+textografo_text = """
+#flowchart PFT 
+  #start  PFT interpretation
+  <>  FVC > 80% predicted
+    Yes 
+      There is no restriction.
+      <> FEV1/FVC > 0.7
+        No
+          Normal Spirometry
+        Yes
+          Obstruction
+    No
+      There is restriction or obstruction with air trapping.
+      <> TLC > 80% predicted
+        Yes
+          Obstruction with air trapping
+        No
+          Restriction"""
 
 # Example usage:
 input_text = """
@@ -96,5 +142,7 @@ output = [{'section': '', 'children': []},
     {'section': 'Cerebellar', 'children': []}]}, 
 {'section': 'Psychiatric', 'children': []}]
 
-result = process_text(input_text)
+result = process_indented_text(input_text, 4)
 print(result == output)
+result = process_indented_text(textografo_text, 2)
+print_list_of_dictionaries(result)
