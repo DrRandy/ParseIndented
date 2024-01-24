@@ -146,3 +146,28 @@ result = process_indented_text(input_text, 4)
 print(result == output)
 result = process_indented_text(textografo_text, 2)
 print_list_of_dictionaries(result)
+
+quick_line = """`?+_%s`_? """
+
+def generate_quick(list_of_dictionaries):
+
+    def helper(list_of_dictionaries, tagroot):
+        index = 0
+        quick_output = "\n"
+        for dictionary in list_of_dictionaries:
+            index += 1
+            fieldname = dictionary['section']
+            tag = tagroot + fieldname[0:4] + '{:02d}'.format(index)
+            children = dictionary['children']
+            section_declaration = """%s="%s"\n""" % (tag, fieldname)
+            children_declaration = helper(children, tag)
+            line_contents = section_declaration + children_declaration
+            output_line = quick_line % line_contents
+            quick_output = quick_output + output_line
+        return quick_output
+    
+    result = helper(list_of_dictionaries, "")
+    return result
+
+quick_result = generate_quick(output[1:])
+print(quick_result)
